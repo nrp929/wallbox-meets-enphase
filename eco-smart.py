@@ -22,7 +22,7 @@ logger.info("Found charger: {}".format(chargerId))
 
 # Check charger status
 chargerStatus = w.getChargerStatus(chargerId)
-print(f"Complete status: {chargerStatus}")
+#print(f"Complete status: {chargerStatus}")
 status = chargerStatus['status_description']
 logger.info("Charger status: {}".format(status))
 
@@ -49,12 +49,12 @@ chargingCurrentValue = 0
 ## Main loop
 
 while (True):
-    if (status == "Connected") or (status == "Charging") or (status == "Paused by user"):
+    if (status == "Connected: waiting for car demand") or (status == "Charging") or (status == "Paused by user"):
         # New poll of excendents
         logger.info("Waiting for excedents poll...")
 
         ## Poll Prometheus API
-        # power_url = 'http://<HOST IP ADDRESS>:9090/api/v1/query?query=consumption_now_watts'
+        # power_url = 'http://<RASPBERRYPI IP ADDRESS>:9090/api/v1/query?query=consumption_now_watts'
         # power = requests.get(power_url).json()
         # net_consumption = power['data']['result'][0]['value'][1]
 
