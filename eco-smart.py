@@ -118,5 +118,8 @@ while (True):
         logger.info("Session not started")
 
     time.sleep(30)
-    chargerStatus = w.getChargerStatus(chargerId)
-    status = chargerStatus['status_description']
+    try:
+        chargerStatus = w.getChargerStatus(chargerId)
+        status = chargerStatus['status_description']
+    except:
+         logger.info("Wallbox gateway error")
