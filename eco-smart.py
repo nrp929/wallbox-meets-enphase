@@ -124,7 +124,7 @@ while (True):
     else:
         logger.info("Session not started")
 
-    time.sleep(300)
+    time.sleep(180)
     try:
         w = Wallbox("<YOUR WALLBOX USER>", "<YOUR WALLBOX PASSWORD>")
         w.authenticate()
