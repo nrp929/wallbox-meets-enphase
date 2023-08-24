@@ -140,6 +140,6 @@ while (True):
             status = "Charging"
         else:
             status = "error"
-logger.info("Charger status: {}".format(status))
+        logger.info("Charger status: {}".format(status))
     except:
          logger.info("Wallbox gateway error")
