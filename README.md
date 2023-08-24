@@ -2,8 +2,11 @@
 Wallbox device solar panels excedents production management via Enphase Envoy-S
 
 #Install PyPi wallbox
+
 sudo apt install python3-pip
+
 delete the file: "/usr/lib/python3.x/EXTERNALLY-MANAGED"
+
 pip install wallbox
 
 #Edit eco-smart.py to add Wallbox and Enphase info
