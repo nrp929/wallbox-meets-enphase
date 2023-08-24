@@ -22,8 +22,15 @@ logger.info("Found charger: {}".format(chargerId))
 
 # Check charger status
 chargerStatus = w.getChargerStatus(chargerId)
-#print(f"Complete status: {chargerStatus}")
-status = chargerStatus['status_description']
+print(f"Complete status: {chargerStatus}")
+if chargerStatus['status_id'] == 164 or chargerStatus['status_id'] == 180 or chargerStatus['status_id'] == 181 or chargerStatus['status_id'] == 183 or chargerStatus['status_id'] == 184 or chargerStatus['status_id'] == 185 or chargerStatus['status_id'] == 186 or chargerStatus['status_id'] == 187 or chargerStatus['status_id'] == 188 or chargerStatus['status_id'] == 188 or chargerStatus['status_id'] == 189:
+    status = "Waiting"
+elif chargerStatus['status_id'] == 178 or chargerStatus['status_id'] == 182:
+    status = "Paused"
+elif chargerStatus['status_id'] == 193 or chargerStatus['status_id'] == 194 or chargerStatus['status_id'] == 195:
+    status = "Charging"
+else:
+    status = "error"
 logger.info("Charger status: {}".format(status))
 
 # Check session list
@@ -40,7 +47,7 @@ if (chargerStatus['config_data']['locked']):
 
 # Minimum and maximum accepted charge current(A) preset
 MINIMUM_CHARGING_CURRENT = 6
-MAXIMUM_CHARGING_CURRENT = 20
+MAXIMUM_CHARGING_CURRENT = 40
 SAFE_MARGIN_CONSUMPTION_W = 100
 SAFE_MARGIN_CURRENT = 0.5
 chargingCurrentValue = 0
@@ -49,7 +56,7 @@ chargingCurrentValue = 0
 ## Main loop
 
 while (True):
-    if (status == "Connected: waiting for car demand") or (status == "Charging") or (status == "Paused by user"):
+    if (status == "Waiting") or (status == "Charging") or (status == "Paused"):
         # New poll of excendents
         logger.info("Waiting for excedents poll...")
 
@@ -117,9 +124,22 @@ while (True):
     else:
         logger.info("Session not started")
 
-    time.sleep(30)
+    time.sleep(300)
     try:
+        w = Wallbox("<YOUR WALLBOX USER>", "<YOUR WALLBOX PASSWORD>")
+        w.authenticate()
         chargerStatus = w.getChargerStatus(chargerId)
-        status = chargerStatus['status_description']
+        chargerId_list = w.getChargersList()
+        chargerId = chargerId_list[0]
+        logger.info("Found charger: {}".format(chargerId))
+        if chargerStatus['status_id'] == 164 or chargerStatus['status_id'] == 180 or chargerStatus['status_id'] == 181 or chargerStatus['status_id'] == 183 or chargerStatus['status_id'] == 184 or chargerStatus['status_id'] == 185 or chargerStatus['status_id'] == 186 or chargerStatus['status_id'] == 187 or chargerStatus['status_id'] == 188 or chargerStatus['status_id'] == 188 or chargerStatus['status_id'] == 189:
+            status = "Waiting"
+        elif chargerStatus['status_id'] == 178 or chargerStatus['status_id'] == 182:
+            status = "Paused"
+        elif chargerStatus['status_id'] == 193 or chargerStatus['status_id'] == 194 or chargerStatus['status_id'] == 195:
+            status = "Charging"
+        else:
+            status = "error"
+logger.info("Charger status: {}".format(status))
     except:
          logger.info("Wallbox gateway error")
