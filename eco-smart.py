@@ -124,8 +124,24 @@ while (True):
     else:
         logger.info("Session not started")
 
-    time.sleep(180)
+    time.sleep(60)
     try:
+        chargerStatus = w.getChargerStatus(chargerId)
+        chargerId_list = w.getChargersList()
+        chargerId = chargerId_list[0]
+        logger.info("Found charger: {}".format(chargerId))
+        if chargerStatus['status_id'] == 164 or chargerStatus['status_id'] == 180 or chargerStatus['status_id'] == 181 or chargerStatus['status_id'] == 183 or chargerStatus['status_id'] == 184 or chargerStatus['status_id'] == 185 or chargerStatus['status_id'] == 186 or chargerStatus['status_id'] == 187 or chargerStatus['status_id'] == 188 or chargerStatus['status_id'] == 188 or chargerStatus['status_id'] == 189:
+            status = "Waiting"
+        elif chargerStatus['status_id'] == 178 or chargerStatus['status_id'] == 182:
+            status = "Paused"
+        elif chargerStatus['status_id'] == 193 or chargerStatus['status_id'] == 194 or chargerStatus['status_id'] == 195:
+            status = "Charging"
+        else:
+            status = "error"
+        logger.info("Charger status: {}".format(status))
+    except:
+        logger.info("Wallbox gateway error")
+        logger.info("Reauthenticating")
         w = Wallbox("<YOUR WALLBOX USER>", "<YOUR WALLBOX PASSWORD>")
         w.authenticate()
         chargerStatus = w.getChargerStatus(chargerId)
@@ -141,5 +157,3 @@ while (True):
         else:
             status = "error"
         logger.info("Charger status: {}".format(status))
-    except:
-         logger.info("Wallbox gateway error")
